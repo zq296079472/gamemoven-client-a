@@ -11,9 +11,10 @@ public final class CocosJavascriptJavaBridge {
 
     /**
      * 执行JS脚本
+     * @param script JS脚本字符串
+     * @return 执行结果(0表示成功)
+     * 注意:native方法,运行时由Cocos引擎libcocos.so提供真实实现
      */
-    public static void evalString(String script) {
-        // 编译期占位实现，运行时由Cocos引擎提供真实实现
-    }
+    public static native int evalString(String script);
 }
 
