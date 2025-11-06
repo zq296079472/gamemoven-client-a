@@ -29,9 +29,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            // SDK自己构建时的混淆规则（保护Cocos等核心类）
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Library不应该自己混淆,应该以未混淆形式发布
+            // 混淆由使用SDK的APP负责,通过consumerProguardFiles传递规则
+            minifyEnabled false
         }
     }
 }
@@ -61,7 +61,7 @@ afterEvaluate {
                 
                 groupId = 'com.clienta'
                 artifactId = 'client-a-sdk'
-                version = '1.0.6'
+                version = '1.0.7'
 
                 pom {
                     name = 'Client A Game SDK'
