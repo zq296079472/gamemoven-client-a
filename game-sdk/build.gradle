@@ -62,14 +62,7 @@ dependencies {
     implementation "androidx.core:core-ktx:1.17.0"
 
     // Cocos引擎（编译时依赖，运行时由APP提供）
-    // 根据项目环境动态选择libservice模块
-    if (findProject(':libservice-moven') != null) {
-        // 在主项目中引用GameMoven的libservice
-        compileOnly project(':libservice-moven')
-    } else {
-        // 在GameMoven项目中引用本地libservice
-        compileOnly project(':libservice')
-    }
+    compileOnly project(':libservice')
     // compileOnly project(':libcocos')  // 如果有libcocos请取消注释
 
     // Applovin SDK
