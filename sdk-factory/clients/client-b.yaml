@@ -1,0 +1,50 @@
+# ==================== 客户B配置 ====================
+
+client:
+  id: client-b
+  name: "Client B Mobile SDK"
+  description: "专为Client B定制的移动SDK"
+
+# ==================== 完全定制包名（与客户A完全不同）====================
+packages:
+  base: "com.mobile.core.engine"
+  public: "com.clientb.mobile.sdk"
+  internal: "com.clientb.mobile.internal"
+
+# ==================== 类名定制 ====================
+classes:
+  main: "ClientBMobileSDK"
+  core: "MobileCore"
+  analytics: "AnalyticsModule"
+  ads: "AdModule"
+
+# ==================== 功能开关 ====================
+features:
+  enable_analytics: true
+  enable_ads: true
+  enable_iap: true
+
+# ==================== 增强混淆配置（不同的seed）====================
+obfuscation:
+  level: "aggressive"
+  proguard:
+    dictionary: "dict-clientb.txt"
+    seed: "clientb_different_seed_2024_v2"
+    optimization_passes: 7
+  stringfog:
+    enable: true
+    key: "clientb_secret_key_999"
+    implementation: "xor"
+  class_obfuscator:
+    enable: true
+    prefix: "b"
+  native:
+    enable: false
+
+# ==================== Maven发布配置 ====================
+maven:
+  groupId: "com.clientb"
+  artifactId: "mobile-sdk"
+  version: "1.0.0"
+  repository: "https://maven.clientb.com/releases"
+

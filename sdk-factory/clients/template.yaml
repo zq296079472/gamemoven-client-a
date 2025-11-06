@@ -1,0 +1,105 @@
+# ==================== SDK客户配置模板 ====================
+# 复制此文件并重命名为 client-xxx.yaml，然后修改配置
+
+client:
+  id: client-template          # 客户唯一标识（用于Gradle flavor名称）
+  name: "Client Template SDK"  # 客户显示名称
+  description: "SDK模板配置"   # 描述信息
+
+# ==================== 包名定制（完全定制，确保每个客户不同）====================
+packages:
+  # 核心SDK包名（内部实现，会被混淆）
+  # 建议：使用看起来无关的包名，增加混淆效果
+  # 示例：com.gaming.core, com.platform.engine, com.mobile.framework
+  base: "com.template.core"
+  
+  # 对外API包名（客户看到的包名）
+  # 建议：使用客户公司名或产品名
+  # 示例：com.clienta.sdk, com.clientb.platform
+  public: "com.template.sdk"
+  
+  # 内部实现包名（可选，用于更深度的隔离）
+  internal: "com.template.internal"
+
+# ==================== 类名定制 ====================
+classes:
+  # 主SDK类名（对外API的入口类）
+  # 示例：ClientAGameSDK, ClientBMobileSDK, ClientCPlatformSDK
+  main: "TemplateSDK"
+  
+  # 核心类名（内部实现）
+  core: "Core"
+  
+  # 分析模块类名
+  analytics: "Analytics"
+  
+  # 广告模块类名
+  ads: "Ads"
+
+# ==================== 功能开关 ====================
+features:
+  enable_analytics: true   # 是否启用分析功能
+  enable_ads: true        # 是否启用广告功能
+  enable_iap: false       # 是否启用内购功能
+
+# ==================== 增强混淆配置 ====================
+obfuscation:
+  # 混淆级别：normal / aggressive / extreme
+  level: "aggressive"
+  
+  # ProGuard/R8 混淆
+  proguard:
+    # 混淆字典文件名（需要在clients/目录下创建）
+    # 建议：每个客户使用不同的字典
+    dictionary: "dict-template.txt"
+    
+    # 混淆seed（确保每个客户不同，影响混淆结果）
+    # 建议：使用客户名+日期+随机数
+    seed: "template_seed_20241106"
+    
+    # 优化次数（1-7，越高混淆越深但编译越慢）
+    optimization_passes: 5
+  
+  # StringFog 字符串加密（可选）
+  stringfog:
+    enable: false                      # 是否启用
+    key: "template_secret_key_123"     # 加密密钥（每个客户不同）
+    implementation: "xor"              # 加密算法：xor / aes
+  
+  # 类名深度混淆（可选）
+  class_obfuscator:
+    enable: true
+    prefix: "t"  # 混淆后类名前缀（a, b, c等）
+  
+  # Native层保护（可选，用于关键逻辑）
+  native:
+    enable: false
+    critical_classes:
+      - "Analytics"
+      - "Ads"
+
+# ==================== Maven发布配置 ====================
+maven:
+  # Maven坐标
+  groupId: "com.template"
+  artifactId: "sdk"
+  version: "1.0.0"
+  
+  # Maven仓库地址
+  # 示例：
+  # - Nexus: https://nexus.example.com/repository/maven-releases/
+  # - Artifactory: https://artifactory.example.com/libs-release-local
+  # - 阿里云私服: https://packages.aliyun.com/maven/repository/xxx/
+  repository: "https://maven.template.com/releases"
+  
+  # 注意：username和password不要写在这里！
+  # 请在 ~/.gradle/gradle.properties 或环境变量中配置：
+  # client-template.maven.username=xxx
+  # client-template.maven.password=xxx
+
+# ==================== 客户特定配置（可选）====================
+custom:
+  # 可以添加任何客户特定的配置
+  app_key: "template_app_key"
+  api_endpoint: "https://api.template.com"
+

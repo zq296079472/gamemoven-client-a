@@ -1,0 +1,21 @@
+# Gradle
+.gradle/
+build/
+**/build/
+local.properties
+
+# Android
+*.apk
+*.ap_
+*.dex
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Mac
+.DS_Store
+
+# 敏感文件
+gradle.properties  # 如果包含密码就忽略

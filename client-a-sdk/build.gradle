@@ -1,0 +1,74 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+android {
+    compileSdkVersion 36
+    namespace "com.clienta.game.sdk"
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 36
+        
+        // 使用客户专属的混淆规则
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
+    implementation "androidx.core:core-ktx:1.17.0"
+    
+    // Cocos 依赖（编译期）
+    compileOnly project(':libservice')
+    
+    // 继承 game-sdk 的所有第三方依赖
+    // 方式1：直接依赖 game-sdk（推荐，避免重复配置）
+    api project(':game-sdk')
+    
+    // 方式2：手动列出所有依赖（如需完全独立）
+    // api 'com.applovin:applovin-sdk:13.5.0'
+    // api 'com.adjust.sdk:adjust-android:5.4.5'
+    // ... 其他依赖
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication) {
+                from components.release
+                
+                // 从 client-a.yaml 配置读取
+                groupId = 'com.clienta'
+                artifactId = 'game-sdk'
+                version = '1.0.0'
+
+                pom {
+                    name = 'Client A Game SDK'
+                    description = 'Client A Gaming Platform SDK'
+                    url = 'https://maven.clienta.com'
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "Local"
+                url = uri("${rootProject.buildDir}/maven-clienta")
+            }
+        }
+    }
+}

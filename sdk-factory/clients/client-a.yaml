@@ -1,0 +1,73 @@
+# ==================== 客户A配置 ====================
+
+client:
+  id: client-a
+  name: "Client A Gaming Platform"
+  description: "专为Client A定制的游戏SDK"
+
+# ==================== 完全定制包名 ====================
+packages:
+  # 核心SDK包名（完全定制，客户看不出来源）
+  base: "com.gaming.platform.core"
+  
+  # 对外API包名（完全不同）
+  public: "com.clienta.game.sdk"
+  
+  # 内部实现包名（混淆后不可见）
+  internal: "com.clienta.game.internal"
+
+# ==================== 类名定制 ====================
+classes:
+  # 主SDK类名
+  main: "ClientAGameSDK"
+  
+  # 核心类名
+  core: "GameCore"
+  
+  # 各模块类名
+  analytics: "AnalyticsEngine"
+  ads: "AdEngine"
+
+# ==================== 功能开关 ====================
+features:
+  enable_analytics: true
+  enable_ads: true
+  enable_iap: false
+
+# ==================== 增强混淆配置 ====================
+obfuscation:
+  level: "aggressive"
+  
+  # ProGuard/R8
+  proguard:
+    dictionary: "dict-clienta.txt"
+    seed: "clienta_unique_seed_2024_v1"
+    optimization_passes: 5
+  
+  # StringFog字符串加密
+  stringfog:
+    enable: true
+    key: "clienta_secret_key_888"
+    implementation: "xor"
+  
+  # 类名深度混淆
+  class_obfuscator:
+    enable: true
+    prefix: "a"  # 混淆后类名如 a.b.c.A
+  
+  # Native层保护（关键逻辑）
+  native:
+    enable: false
+    critical_classes:
+      - "AnalyticsEngine"
+      - "AdEngine"
+
+# ==================== Maven发布配置 ====================
+maven:
+  groupId: "com.clienta"
+  artifactId: "game-sdk"
+  version: "1.0.0"
+  repository: "https://maven.clienta.com/releases"
+  # 注意：username和password从gradle.properties或环境变量读取
+  # 不要在这里写明文密码！
+

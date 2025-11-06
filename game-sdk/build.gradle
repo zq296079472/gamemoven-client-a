@@ -1,0 +1,161 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+def includeFullMediation = (findProperty('GAME_SDK_INCLUDE_FULL_MEDIATION')?.toString()?.toBoolean() ?: false)
+
+android {
+    compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
+    namespace "com.twist.screw.sdk"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        minSdkVersion PROP_MIN_SDK_VERSION.toInteger()
+        targetSdkVersion PROP_TARGET_SDK_VERSION.toInteger()
+
+        // 配置SDK的ProGuard规则，会自动传递给使用此SDK的APP
+        consumerProguardFiles(
+                'proguard/proguard-sdk.pro',
+                'proguard/proguard-applovin.pro',
+                'proguard/proguard-google-play-services.pro',
+                'proguard/proguard-google-admob.pro',
+                'proguard/proguard-google-analytics.pro',
+                'proguard/proguard-adjust.pro',
+                'proguard/proguard-facebook.pro',
+                'proguard/proguard-facebook-fresco.pro',
+                'proguard/proguard-firebase.pro',
+                'proguard/proguard-crashlytics-2.pro',
+                'proguard/proguard-ali.pro',
+                'proguard/proguard-mmkv.pro',
+                'proguard/proguard-gson.pro',
+                'proguard/proguard-retrofit2.pro',
+                'proguard/proguard-square-okhttp3.pro',
+                'proguard/proguard-square-okio.pro'
+        )
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // AndroidX
+    implementation "androidx.core:core-ktx:1.17.0"
+
+    // Cocos引擎（编译时依赖，运行时由APP提供）
+    compileOnly project(':libservice')
+    // compileOnly project(':libcocos')  // 如果有libcocos请取消注释
+
+    // Applovin SDK
+    api 'com.applovin:applovin-sdk:13.5.0'
+    api 'com.google.android.gms:play-services-base:18.9.0'
+    api 'com.google.android.gms:play-services-tasks:18.4.0'
+    api 'com.google.android.gms:play-services-basement:18.9.0'
+    api("com.google.android.ump:user-messaging-platform:4.0.0")
+
+    if (includeFullMediation) {
+        [
+                'com.applovin.mediation:inmobi-adapter:10.8.8.0',
+                'com.applovin.mediation:vungle-adapter:7.6.0.0',
+                'com.applovin.mediation:mintegral-adapter:16.10.11.0',
+                'com.applovin.mediation:bytedance-adapter:7.7.0.2.0',
+                'com.applovin.mediation:unityads-adapter:4.16.3.0',
+                'com.applovin.mediation:bigoads-adapter:5.5.2.0',
+                'com.applovin.mediation:ironsource-adapter:9.0.0.0.0',
+                'com.applovin.mediation:facebook-adapter:6.21.0.0',
+                'com.applovin.mediation:yso-network-adapter:1.2.7.1',
+                'com.applovin.mediation:maio-adapter:2.0.4.0',
+                'com.applovin.mediation:ogury-presage-adapter:6.1.0.1',
+                'com.applovin.mediation:bidmachine-adapter:3.5.0.0',
+                'com.applovin.mediation:chartboost-adapter:9.10.0.0',
+                'com.applovin.mediation:hyprmx-adapter:6.4.2.3',
+                'com.hyprmx.android:HyprMX-SDK:6.4.3',
+                'com.applovin.mediation:fyber-adapter:8.4.0.0',
+                'com.applovin.mediation:line-adapter:2025.10.28.0',
+                'com.applovin.mediation:mobilefuse-adapter:1.9.3.0',
+                'com.applovin.mediation:moloco-adapter:4.2.1.0',
+                'com.applovin.mediation:pubmatic-adapter:4.10.0.0',
+                'com.applovin.mediation:smaato-adapter:22.7.2.3',
+                'com.applovin.mediation:verve-adapter:3.7.1.0',
+                'com.applovin.mediation:google-adapter:24.7.0.0',
+                'com.applovin.mediation:google-ad-manager-adapter:24.7.0.0'
+        ].each { dependencyNotation ->
+            api dependencyNotation
+        }
+    } else {
+        logger.lifecycle("[game-sdk] 跳过可选的广告网络依赖，如需包含请设置 -PGAME_SDK_INCLUDE_FULL_MEDIATION=true")
+    }
+
+    // Adjust
+    api 'com.adjust.sdk:adjust-android:5.4.5'
+    api 'com.android.installreferrer:installreferrer:2.2'
+    api 'com.google.android.gms:play-services-ads-identifier:18.2.0'
+    api 'com.adjust.sdk:adjust-android-samsung-referrer:5.4.5'
+
+    // Firebase
+    api(platform("com.google.firebase:firebase-bom:34.5.0"))
+    api("com.google.firebase:firebase-analytics")
+    api("com.google.firebase:firebase-crashlytics")
+    api("com.google.firebase:firebase-messaging")
+
+    // AliLog
+    api 'io.github.aliyun-sls:aliyun-log-android-sdk:2.7.13@aar'
+
+    // Facebook
+    api "com.facebook.android:facebook-core:18.1.3"
+
+    // Other
+    api 'com.google.code.gson:gson:2.13.2'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication) {
+                from components.release
+                groupId = findProperty('GAME_SDK_GROUP_ID') ?: 'com.sdk.gamemoven'
+                artifactId = findProperty('GAME_SDK_ARTIFACT_ID') ?: 'game-sdk'
+                version = findProperty('GAME_SDK_VERSION') ?: '1.0.0'
+
+                pom {
+                    name = artifactId
+                    description = 'Game SDK core library'
+                    url = 'https://example.com/game-sdk'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                def defaultDir = new File(rootProject.buildDir, "maven")
+                def publishUrl = findProperty('GAME_SDK_PUBLISH_URL')?.replace('\${projectDir}', project.projectDir.absolutePath)
+                url = uri(publishUrl ?: defaultDir)
+            }
+        }
+    }
+}
+
