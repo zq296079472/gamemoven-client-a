@@ -24,6 +24,7 @@ android {
         // 配置SDK的ProGuard规则，会自动传递给使用此SDK的APP
         consumerProguardFiles(
                 'proguard/proguard-sdk.pro',
+                'proguard/proguard-cocos.pro',
                 'proguard/proguard-applovin.pro',
                 'proguard/proguard-google-play-services.pro',
                 'proguard/proguard-google-admob.pro',

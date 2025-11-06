@@ -61,10 +61,24 @@
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 
-# ==================== 9. 第三方SDK规则 ====================
+# ==================== 9. Cocos引擎保护（关键!避免运行时NoSuchMethodError）====================
+-keep class com.cocos.** { *; }
+-keep class org.cocos2dx.** { *; }
+-keep class com.cocos.lib.** { *; }
+-keep class com.cocos.service.** { *; }
+
+# 特别保留JS桥接类（防止混淆导致运行时错误）
+-keepclassmembers class com.cocos.lib.CocosJavascriptJavaBridge {
+    public static <methods>;
+}
+-keepclassmembers class com.cocos.lib.CocosHelper {
+    public static <methods>;
+}
+
+# ==================== 10. 第三方SDK规则 ====================
 -dontwarn **
 
-# ==================== 10. 保留注解标记 ====================
+# ==================== 11. 保留注解标记 ====================
 -keep class * {
     @androidx.annotation.Keep *;
 }
