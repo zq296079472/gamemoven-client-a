@@ -144,10 +144,17 @@ object AnalyticsUtils {
             val cocosParams = paramStr.split(";")
             for (entry in cocosParams) {
                 try {
+                    if (entry.isBlank()) continue
+                    
                     val temp = entry.split("@")
+                    if (temp.size < 2) continue // 安全检查
 
                     val key = temp[0]
-                    val value = temp[1].split(":")[1]
+                    val valuePart = temp[1]
+                    
+                    // 安全解析value: 格式为 "type:value"
+                    val valueSplit = valuePart.split(":", limit = 2)
+                    val value = if (valueSplit.size > 1) valueSplit[1] else valuePart
 
                     if (key == "userid" || key == "userId") {
                         CacheManager.userId = value
@@ -161,10 +168,9 @@ object AnalyticsUtils {
                     }
                     CacheManager.deviceLogRecord = deviceLogRecord
 
-                    allParams[temp[0]] =
-                        temp[1].replace("${temp[1].split(":")[0]}:", "");//temp[1].split(":")[1]
+                    allParams[key] = value
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Log.e(TAG, "Failed to parse cocos param: $entry", e)
                 }
             }
         }
