@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 36
-    namespace "com.clienta.game.sdk"
+    namespace "com.clientb.platform.api"
 
     defaultConfig {
         minSdkVersion 24
@@ -40,8 +40,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
     implementation "androidx.core:core-ktx:1.17.0"
     
-    // Cocos 依赖（编译期，game-sdk已经compileOnly了，这里不需要重复）
-    // compileOnly project(':libservice')
+    // Cocos 依赖（编译期）
+    compileOnly project(':libservice')
     
     // 继承 game-sdk 的所有功能和第三方依赖
     // 使用api暴露必要的接口类型(SDKConfig、回调接口等)
@@ -60,13 +60,13 @@ afterEvaluate {
             create("release", MavenPublication) {
                 from components.release
                 
-                groupId = 'com.clienta'
-                artifactId = 'client-a-sdk'
-                version = '2.0.0'
+                groupId = 'com.clientb'
+                artifactId = 'game-platform-sdk'
+                version = '1.0.0'
 
                 pom {
-                    name = 'Client A Game SDK'
-                    description = 'Client A Gaming Platform SDK'
+                    name = 'GamePlatform Pro SDK'
+                    description = 'Professional gaming platform SDK for Client B'
                     url = 'https://github.com/zq296079472/gamemoven-client-a'
                     
                     licenses {

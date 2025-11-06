@@ -1,4 +1,4 @@
-package com.clienta.game.sdk
+package com.clientb.platform.api
 
 import android.app.Application
 import android.content.Context
@@ -10,42 +10,30 @@ import com.twist.screw.sdk.SDKConfig
 import com.twist.screw.sdk.bridge.IConverterDelegate
 
 /**
- * Client A Game SDK - 完全定制的游戏SDK
+ * GamePlatform Pro - 专为Client B定制的专业游戏平台SDK
  * 
- * 这是客户A专属的SDK API，内部基于强大的游戏引擎核心
- * 客户无法感知底层实现，API完全定制化
- * 
- * @version 1.0.9
- * @author Client A Gaming Platform Team
+ * @version 1.0.0
+ * @author GamePlatform Pro Team
  */
-class ClientAGameSDK private constructor() {
+class GamePlatformSDK private constructor() {
     
     companion object {
         @Volatile
-        private var instance: ClientAGameSDK? = null
+        private var instance: GamePlatformSDK? = null
         
         /**
          * 获取SDK单例
          */
         @JvmStatic
-        fun getInstance(): ClientAGameSDK {
+        fun getInstance(): GamePlatformSDK {
             return instance ?: synchronized(this) {
-                instance ?: ClientAGameSDK().also { instance = it }
+                instance ?: GamePlatformSDK().also { instance = it }
             }
         }
     }
     
     /**
-     * 初始化Client A游戏SDK
-     * 
-     * 这是SDK使用的第一步，建议在Application.onCreate()中调用
-     * 
-     * @param app Application实例
-     * @param config SDK配置对象
-     * @param cocosCallback Cocos引擎回调接口(可选)
-     * @param uiCallback UI交互回调接口(可选)
-     * @param aliLogParamsBuilder 日志参数扩展器(可选)
-     * @param converterDelegate 转换器委托(可选)
+     * 初始化GamePlatform Pro SDK
      */
     fun init(
         app: Application,
@@ -55,7 +43,6 @@ class ClientAGameSDK private constructor() {
         aliLogParamsBuilder: IAliLogParamsBuilder? = null,
         converterDelegate: IConverterDelegate? = null
     ) {
-        // 委托给底层GameSDK处理
         GameSDK.init(
             app = app,
             config = config,
@@ -75,42 +62,30 @@ class ClientAGameSDK private constructor() {
     /**
      * 获取Application上下文
      */
-    fun getContext(): Context {
-        return GameSDK.getContext()
-    }
+    fun getContext(): Context = GameSDK.getContext()
     
     /**
      * 获取SDK配置
      */
-    fun getConfig(): SDKConfig {
-        return GameSDK.getConfig()
-    }
+    fun getConfig(): SDKConfig = GameSDK.getConfig()
     
     /**
      * 获取Cocos回调
      */
-    fun getCocosCallback(): ICocosCallback? {
-        return GameSDK.getCocosCallback()
-    }
+    fun getCocosCallback(): ICocosCallback? = GameSDK.getCocosCallback()
     
     /**
      * 获取UI回调
      */
-    fun getUICallback(): IUICallback? {
-        return GameSDK.getUICallback()
-    }
+    fun getUICallback(): IUICallback? = GameSDK.getUICallback()
     
     /**
      * 获取AliLog参数构建器
      */
-    fun getAliLogParamsBuilder(): IAliLogParamsBuilder? {
-        return GameSDK.getAliLogParamsBuilder()
-    }
+    fun getAliLogParamsBuilder(): IAliLogParamsBuilder? = GameSDK.getAliLogParamsBuilder()
     
     /**
      * 获取转换器委托
      */
-    fun getConverterDelegate(): IConverterDelegate? {
-        return GameSDK.getConverterDelegate()
-    }
+    fun getConverterDelegate(): IConverterDelegate? = GameSDK.getConverterDelegate()
 }

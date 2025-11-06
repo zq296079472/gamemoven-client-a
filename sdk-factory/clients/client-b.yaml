@@ -2,49 +2,101 @@
 
 client:
   id: client-b
-  name: "Client B Mobile SDK"
-  description: "专为Client B定制的移动SDK"
+  name: "GamePlatform Pro"
+  description: "专为Client B定制的专业游戏平台SDK"
 
-# ==================== 完全定制包名（与客户A完全不同）====================
+# ==================== 完全定制包名 ====================
 packages:
-  base: "com.mobile.core.engine"
-  public: "com.clientb.mobile.sdk"
-  internal: "com.clientb.mobile.internal"
+  # 核心SDK包名（与客户A完全不同）
+  base: "com.gameplatform.pro.engine"
+  
+  # 对外API包名（完全不同的品牌标识）
+  public: "com.clientb.platform.api"
+  
+  # 内部实现包名
+  internal: "com.clientb.platform.internal"
 
 # ==================== 类名定制 ====================
 classes:
-  main: "ClientBMobileSDK"
-  core: "MobileCore"
-  analytics: "AnalyticsModule"
-  ads: "AdModule"
+  # 主SDK类名（与ClientAGameSDK完全不同）
+  main: "GamePlatformSDK"
+  
+  # 核心类名
+  core: "PlatformEngine"
+  
+  # 各模块类名
+  analytics: "EventTracker"
+  ads: "AdController"
 
-# ==================== 功能开关 ====================
-features:
-  enable_analytics: true
-  enable_ads: true
-  enable_iap: true
-
-# ==================== 增强混淆配置（不同的seed）====================
+# ==================== 混淆配置 ====================
 obfuscation:
   level: "aggressive"
+  
   proguard:
+    # 客户B专属混淆字典
     dictionary: "dict-clientb.txt"
-    seed: "clientb_different_seed_2024_v2"
-    optimization_passes: 7
-  stringfog:
-    enable: true
-    key: "clientb_secret_key_999"
-    implementation: "xor"
-  class_obfuscator:
-    enable: true
-    prefix: "b"
-  native:
-    enable: false
+    
+    # 独特的混淆种子
+    seed: "clientb_unique_seed_2024_v2"
+    
+    # 额外混淆规则
+    extra_rules: |
+      -repackageclasses 'com.clientb.platform.obf'
+      -allowaccessmodification
+      -overloadaggressively
 
 # ==================== Maven发布配置 ====================
 maven:
   groupId: "com.clientb"
-  artifactId: "mobile-sdk"
+  artifactId: "game-platform-sdk"
   version: "1.0.0"
+  
+  # 客户B的Maven仓库
   repository: "https://maven.clientb.com/releases"
+  
+  # POM元数据
+  pom:
+    name: "GamePlatform Pro SDK"
+    description: "Professional gaming platform SDK for Client B"
+    url: "https://github.com/clientb/game-platform-sdk"
+    
+    developers:
+      - name: "Client B Platform Team"
+        email: "platform@clientb.com"
+    
+    scm:
+      connection: "scm:git:git://github.com/clientb/game-platform-sdk.git"
+      url: "https://github.com/clientb/game-platform-sdk"
 
+# ==================== 功能开关 ====================
+features:
+  # 分析功能
+  analytics:
+    enabled: true
+    providers: ["firebase", "adjust", "alilog"]
+  
+  # 广告功能  
+  ads:
+    enabled: true
+    providers: ["applovin"]
+  
+  # 支付功能
+  payment:
+    enabled: false
+
+# ==================== 品牌定制 ====================
+branding:
+  # SDK显示名称
+  display_name: "GamePlatform Pro"
+  
+  # Logo资源
+  logo: "clientb_logo.png"
+  
+  # 主题色
+  primary_color: "#FF6B35"
+  
+  # 文档链接
+  documentation_url: "https://docs.clientb.com/sdk"
+  
+  # 支持邮箱
+  support_email: "support@clientb.com"

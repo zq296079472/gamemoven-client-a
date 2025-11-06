@@ -15,6 +15,8 @@ import java.util.concurrent.Executors
 
 /**
  * Game SDK主类 - 管理SDK的初始化和全局访问
+ * 
+ * 注意: 此类仅供白标SDK包装层使用，不应直接被客户APP调用
  */
 object GameSDK {
     private const val TAG = "GameSDK"
