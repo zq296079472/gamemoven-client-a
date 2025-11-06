@@ -26,6 +26,14 @@ android {
     buildFeatures {
         buildConfig true
     }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            // SDK自己构建时的混淆规则（保护Cocos等核心类）
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 dependencies {
@@ -53,7 +61,7 @@ afterEvaluate {
                 
                 groupId = 'com.clienta'
                 artifactId = 'client-a-sdk'
-                version = '1.0.5'
+                version = '1.0.6'
 
                 pom {
                     name = 'Client A Game SDK'
