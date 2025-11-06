@@ -3,6 +3,5 @@ jdk:
   - openjdk17
 
 install:
-  - FILE="-Dfile=client-a-sdk/build/outputs/aar/client-a-sdk-release.aar"
-  - mvn install:install-file $FILE -DgroupId=com.github.zq296079472 -DartifactId=gamemoven-client-a -Dversion=$VERSION -Dpackaging=aar -DgeneratePom=true
+  - ./gradlew :client-a-sdk:assembleRelease publishToMavenLocal
 
