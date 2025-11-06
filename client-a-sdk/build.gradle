@@ -51,7 +51,6 @@ afterEvaluate {
             create("release", MavenPublication) {
                 from components.release
                 
-                // 从 client-a.yaml 配置读取
                 groupId = 'com.clienta'
                 artifactId = 'game-sdk'
                 version = '1.0.0'
@@ -59,15 +58,47 @@ afterEvaluate {
                 pom {
                     name = 'Client A Game SDK'
                     description = 'Client A Gaming Platform SDK'
-                    url = 'https://maven.clienta.com'
+                    url = 'https://github.com/zq296079472/gamemoven-client-a'
+                    
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    
+                    developers {
+                        developer {
+                            id = 'clienta'
+                            name = 'Client A Team'
+                            email = 'dev@clienta.com'
+                        }
+                    }
+                    
+                    scm {
+                        connection = 'scm:git:https://github.com/zq296079472/gamemoven-client-a.git'
+                        developerConnection = 'scm:git:https://github.com/zq296079472/gamemoven-client-a.git'
+                        url = 'https://github.com/zq296079472/gamemoven-client-a'
+                    }
                 }
             }
         }
 
         repositories {
+            // 本地测试仓库（保留，方便测试）
             maven {
                 name = "Local"
                 url = uri("${rootProject.buildDir}/maven-clienta")
+            }
+            
+            // GitHub Packages（正式发布）
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/zq296079472/gamemoven-client-a")
+                credentials {
+                    username = project.findProperty("github.username") ?: System.getenv("GITHUB_USERNAME")
+                    password = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
+                }
             }
         }
     }
