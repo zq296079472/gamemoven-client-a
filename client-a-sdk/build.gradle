@@ -62,7 +62,7 @@ afterEvaluate {
                 
                 groupId = 'com.clienta'
                 artifactId = 'client-a-sdk'
-                version = '2.0.0'
+                version = '2.0.2'
 
                 pom {
                     name = 'Client A Game SDK'

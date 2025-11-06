@@ -5,7 +5,7 @@ apply plugin: 'maven-publish'
 def includeFullMediation = (findProperty('GAME_SDK_INCLUDE_FULL_MEDIATION')?.toString()?.toBoolean() ?: false)
 
 android {
-    compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
+    compileSdkVersion 36
     namespace "com.twist.screw.sdk"
 
     compileOptions {
@@ -18,8 +18,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion PROP_MIN_SDK_VERSION.toInteger()
-        targetSdkVersion PROP_TARGET_SDK_VERSION.toInteger()
+        minSdkVersion 24
+        targetSdkVersion 36
 
         // 配置SDK的ProGuard规则，会自动传递给使用此SDK的APP
         consumerProguardFiles(
@@ -132,9 +132,9 @@ afterEvaluate {
         publications {
             create("release", MavenPublication) {
                 from components.release
-                groupId = findProperty('GAME_SDK_GROUP_ID') ?: 'com.sdk.gamemoven'
-                artifactId = findProperty('GAME_SDK_ARTIFACT_ID') ?: 'game-sdk'
-                version = findProperty('GAME_SDK_VERSION') ?: '1.0.0'
+                groupId = 'com.sdk.gamemoven'
+                artifactId = 'game-sdk'
+                version = '2.0.1'
 
                 pom {
                     name = artifactId
@@ -152,9 +152,12 @@ afterEvaluate {
 
         repositories {
             maven {
-                def defaultDir = new File(rootProject.buildDir, "maven")
-                def publishUrl = findProperty('GAME_SDK_PUBLISH_URL')?.replace('\${projectDir}', project.projectDir.absolutePath)
-                url = uri(publishUrl ?: defaultDir)
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/zq296079472/gamemoven-client-a")
+                credentials {
+                    username = project.findProperty("github.username") ?: System.getenv("GITHUB_USERNAME")
+                    password = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
+                }
             }
         }
     }
