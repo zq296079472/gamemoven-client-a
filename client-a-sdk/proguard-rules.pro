@@ -26,9 +26,12 @@
 -optimizationpasses 5
 
 # ==================== 4. 自定义混淆字典 ====================
--obfuscationdictionary clients/dict-clienta.txt
--classobfuscationdictionary clients/dict-clienta.txt
--packageobfuscationdictionary clients/dict-clienta.txt
+# 注意：混淆字典文件需要在AAR包中才能使用
+# 暂时移除字典引用，使用ProGuard默认混淆策略
+# TODO: 如需自定义字典，需将字典文件打包进AAR
+# -obfuscationdictionary clients/dict-clienta.txt
+# -classobfuscationdictionary clients/dict-clienta.txt
+# -packageobfuscationdictionary clients/dict-clienta.txt
 
 # ==================== 5. 自定义Seed ====================
 -adaptclassstrings clienta_unique_seed_2024_v1
