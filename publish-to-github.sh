@@ -3,58 +3,50 @@
 
 set -e
 
-REPO_URL="https://maven.pkg.github.com/zq296079472/gamemoven-client-a"
-PACKAGE_COORD="com.clienta:game-sdk:1.0.0"
+echo "========================================="
+echo "发布Client A SDK到GitHub Packages"
+echo "========================================="
 
-cat <<INFO
-=========================================
-发布 Client A SDK 到 GitHub Packages
-=========================================
-INFO
-
+# 检查环境变量
 if [ -z "$GITHUB_TOKEN" ]; then
-    cat <<ERR
-❌ 错误: 未检测到 GITHUB_TOKEN 环境变量。
-   请先执行: export GITHUB_TOKEN=<你的GitHub Token>
-ERR
+    echo "❌ 错误: 请设置GITHUB_TOKEN环境变量"
+    echo "   export GITHUB_TOKEN=ghp_xxxxx"
     exit 1
 fi
 
-cat <<MSG
-✅ GitHub Token 已设置
+echo "✅ GitHub Token已设置"
 
-🧹 清理旧构建...
-MSG
+# 清理旧构建
+echo ""
+echo "🧹 清理旧构建..."
 ./gradlew clean
 
-cat <<MSG
-🔨 编译 Client A SDK...
-MSG
+# 编译SDK
+echo ""
+echo "🔨 编译Client A SDK..."
 ./gradlew :client-a-sdk:assembleRelease
 
-cat <<MSG
-📦 发布到 GitHub Packages...
-MSG
-./gradlew :client-a-sdk:publishReleasePublicationToGitHubPackagesRepository -PGITHUB_TOKEN="$GITHUB_TOKEN"
+# 发布到GitHub Packages
+echo ""
+echo "📦 发布到GitHub Packages..."
+./gradlew :client-a-sdk:publishReleasePublicationToGitHubPackagesRepository
 
-cat <<'INFO'
-=========================================
-✅ 发布成功!
-=========================================
+echo ""
+echo "========================================="
+echo "✅ 发布成功!"
+echo "========================================="
+echo ""
+echo "客户可以通过以下方式使用:"
+echo ""
+echo "repositories {"
+echo "    maven {"
+echo "        url \"https://maven.pkg.github.com/zq296079472/gamemoven-client-a\""
+echo "        credentials {"
+echo "        }"
+echo "    }"
+echo "}"
+echo ""
+echo "dependencies {"
+echo "    implementation 'com.clienta:client-a-sdk:2.0.0'"
+echo "}"
 
-客户集成示例:
-
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/zq296079472/gamemoven-client-a")
-        credentials {
-            username = "zq296079472"
-            password = "<YOUR_GITHUB_TOKEN>"
-        }
-    }
-}
-
-dependencies {
-    implementation("com.clienta:game-sdk:1.0.0")
-}
-INFO
