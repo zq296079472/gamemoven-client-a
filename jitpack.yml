@@ -1,7 +1,0 @@
-# JitPack构建配置
-jdk:
-  - openjdk17
-
-install:
-  - ./gradlew :client-a-sdk:assembleRelease publishToMavenLocal
-

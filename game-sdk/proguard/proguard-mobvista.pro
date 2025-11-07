@@ -1,9 +1,0 @@
--keepattributes Signature 
--keepattributes *Annotation*
--keep class com.mobvista.** {*; } 
--keep interface com.mobvista.** {*; } 
--keep class android.support.v4.** { *; }
--dontwarn com.mobvista.**
--keep class **.R$* {
-    public static final int mobvista*;
-}
